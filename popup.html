@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="button.css">
+  <style>
+    .container {
+      min-width: 400px;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: flex-start;
+    }
+
+    .search-input-top {
+      width: calc(100% - 32px);
+      height: 44px;
+      border: none;
+      outline: none;
+      border-radius: 24px;
+      border: 2px solid gray;
+      margin: 0;
+      padding: 0;
+      padding-inline-start: 16px;
+    }
+
+    .search-input-top-focus {
+      border-bottom: 1px solid gray;
+      outline: none;
+      border-radius: 24px 24px 0 0;
+    }
+
+    .search-input-bottom{
+      width: calc(100% - 32px);
+      border-radius: 24px;
+      border: 2px solid gray;
+      border-top: none;
+      border-radius: 0 0 24px 24px;
+      padding-inline-start: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div>
+      <input type="text" id="query" class="search-input-top" autocomplete="off">
+    </div>
+    <div name="results" id="select-suggestion">
+      <div />
+    </div>
+    <script src="popup.js" type="module"></script>
+</body>
+
+</html>
