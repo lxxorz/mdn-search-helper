@@ -1,9 +1,10 @@
 import {getSearchIndex, filterIndex} from "./common.js"
-let color = '#3aa757';
-const language = "zh-cn";
+import {escapeHtml} from './tools.js'
 const __DEV__ = true;
-chrome.storage.local.set({language});
-fetch(`/public/search-index/${language}.json`).then(async(response) => {
+const default_language = "zh-cn";
+chrome.storage.local.set({language: default_language});
+
+fetch(`/public/search-index/${default_language}.json`).then(async(response) => {
   const search_index = await response.json();
   __DEV__ && console.log("search_index", search_index)
   chrome.storage.local.set({search_index})
@@ -12,12 +13,16 @@ fetch(`/public/search-index/${language}.json`).then(async(response) => {
 })
 
 
-
-chrome.omnibox.onInputChanged.addListener(async (value, suggestion) => {
+chrome.omnibox.onInputChanged.addListener(async (user_input, suggestion) => {
   const {search_index} = await getSearchIndex();
-  const suggestions = filterIndex(value, search_index).map(item => ({
-    content: item.url,
-    description: `<match>test</match>`
+  const suggestions = filterIndex(user_input, search_index).map(item => ({
+    content: "https://developer.mozilla.org"+item.url,
+    description: `<match>${escapeHtml(item.title)}</match>`
   }))
   suggestion(suggestions);
 });
+
+
+chrome.omnibox.onInputEntered.addListener(async (text, disposition) => {
+  chrome.tabs.create({active: true, url: text})
+})

@@ -24,7 +24,6 @@ export function search(value, search_index){
 export function getItem(key) {
     return new Promise(resolve => {
       chrome.storage.local.get(key, (result) => {
-        console.log(result)
         resolve(result);
       })
     })

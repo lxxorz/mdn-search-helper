@@ -19,7 +19,7 @@ async function fillSelect(e) {
   select_suggestion.replaceChildren(...options);
 }
 
-function debounce(fn) {
+function debounce(fn, delay = 100) {
   let timer;
   return (...args) => {
     if (timer)
@@ -27,7 +27,7 @@ function debounce(fn) {
 
     timer = setTimeout(() => {
       fn(...args);
-    }, 200);
+    }, delay);
   }
 }
 function eventHandlerInContent(element, event, handler) {
