@@ -1,9 +1,9 @@
 // Initialize button with user's preferred color
-import {search, getSearchIndex, INDEX_KEY} from  "./common.js"
+import {search, getSearchIndex} from  "./common.js"
+import {debounce} from "./tools"
+
 const select_suggestion = document.getElementById("select-suggestion");
 const input_query = document.getElementById("query");
-
-
 
 async function fillSelect(e) {
   const { value } = e.target;
@@ -17,33 +17,6 @@ async function fillSelect(e) {
     input_query.classList.remove("search-input-top-focus");
   }
   select_suggestion.replaceChildren(...options);
-}
-
-function debounce(fn, delay = 100) {
-  let timer;
-  return (...args) => {
-    if (timer)
-      timer = clearTimeout(timer);
-
-    timer = setTimeout(() => {
-      fn(...args);
-    }, delay);
-  }
-}
-function eventHandlerInContent(element, event, handler) {
-  element.addEventListener(event, async () => {
-    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    return new Promise((resolve, reject) => {
-      const wrapHandler = () => {
-        resolve();
-        handler();
-      }
-      chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        function: wrapHandler,
-      });
-    })
-  });
 }
 
 

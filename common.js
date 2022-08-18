@@ -32,3 +32,19 @@ export function getItem(key) {
 export function getSearchIndex() {
   return getItem(INDEX_KEY);
 }
+
+function eventHandlerInContent(element, event, handler) {
+  element.addEventListener(event, async () => {
+    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    return new Promise((resolve, reject) => {
+      const wrapHandler = () => {
+        resolve();
+        handler();
+      }
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        function: wrapHandler,
+      });
+    })
+  });
+}
