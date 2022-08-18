@@ -37,6 +37,8 @@ chrome.omnibox.onInputEntered.addListener(async (text) => {
 
     if (!url_regex.test(text)) {
       url = `https://developer.mozilla.org/${default_language}/search?q=${text}`;
+    }else {
+      url = text;
     }
     __DEV__ &&  debug(url);
     chrome.tabs.create({active: true, url: url})
