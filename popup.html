@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
-
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <head>
-  <link rel="stylesheet" href="button.css">
   <style>
+    body {
+      margin: 0;
+    }
+
     .container {
-      min-width: 400px;
+      min-width: 200px;
+      padding: 4px 6px;
+      border-radius: 4px;
       display: flex;
       flex-flow: column nowrap;
       justify-content: flex-start;
+      --text-color: #F2F2F2;
+      --background-color: #1E1F21;
+      background-color: var(--background-color);
+      color: var(--text-color);
     }
 
     .search-input-top {
@@ -29,7 +38,7 @@
       border-radius: 24px 24px 0 0;
     }
 
-    .search-input-bottom{
+    .search-input-bottom {
       width: calc(100% - 32px);
       border-radius: 24px;
       border: 2px solid gray;
@@ -37,25 +46,36 @@
       border-radius: 0 0 24px 24px;
       padding-inline-start: 16px;
     }
+
+    #select-language {
+      width: 100%;
+      border: none;
+      outline: none;
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    .item{
+      display: flex;
+      flex: row nowrap;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
-      <label for="language">
-        default language
-        <select>
-          <option value="zh-cn">ZH-CN(Chinese)</option>
-          <option value="en-us">EN_US(English)</option>
-        </select>
-      </label>
-    <div>
-      <input type="text" id="query" class="search-input-top" autocomplete="off">
-    </div>
-    <div name="results" id="select-suggestion">
-      <div />
-    </div>
-    <script src="popup.js" type="module"></script>
+      <select id="select-language">
+        <option value="zh-cn">中文简体</option>
+        <option value="en-us">English</option>
+        <option value="ja">日本語</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="ko">한국어</option>
+        <option value="pt-BR">Português (do Brasil)</option>
+        <option value="ru">Русский</option>
+      </select>
+  </div>
+  <script src="./popup.js" type="module"></script>
 </body>
 
 </html>

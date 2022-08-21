@@ -1,23 +1,28 @@
 // Initialize button with user's preferred color
-import {search, getSearchIndex} from  "./common.js"
-import {debounce} from "./tools"
+import { fetchIndexToStorage, debug, __DEV__, mdn_storage_key, default_language_key } from "./common.js"
+import { Store } from "./store.js";
 
-const select_suggestion = document.getElementById("select-suggestion");
-const input_query = document.getElementById("query");
+const local = new Store(chrome.storage.local);
 
-async function fillSelect(e) {
-  const { value } = e.target;
-  const {search_index} = await getSearchIndex();
-  const options = search(value, search_index);
-  if (options.length) {
-    select_suggestion.className = "search-input-bottom"
-    input_query.classList.add("search-input-top-focus")
-  } else {
-    select_suggestion.className = ""
-    input_query.classList.remove("search-input-top-focus");
+const select_language = document.getElementById("select-language");
+
+async function  initLanguage() {
+  const language = await local.getItem(default_language_key);
+  const current_language = select_language.value
+  debug(language, current_language)
+  if(language && language !== current_language) {
+    select_language.value = language;
   }
-  select_suggestion.replaceChildren(...options);
 }
 
+initLanguage();
 
-input_query.addEventListener("input", debounce(fillSelect));
+select_language.addEventListener("input",async(e) => {
+  const language = e.target.value;
+  await local.setItem(default_language_key, language);
+  __DEV__ && debug("change language", language);
+  e.target.value = language;
+  await fetchIndexToStorage(mdn_storage_key, `https://developer.mozilla.org/${language}/search-index.json`, local)
+  const result = await local.getItem(mdn_storage_key)
+  debug("result", result)
+})
